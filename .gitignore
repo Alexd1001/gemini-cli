@@ -1,0 +1,64 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+#  Usually contains a dist/ folder and build artifacts
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+#
+/archive/
+/logs_archived/
+/archive/
+/logs/
+
+*.db
+instructions/david_goggins.json
+instructions/PhilBot.json
+instructions/tyler_durden.json
+instructions/winston_churchill.json
+roles_archive/ai_ge.json
+roles_archive/ec_qa.json
+roles_archive/george_teachings.json
+roles_archive/prompt_improver.json
+roles_archive/python_expert.json
+roles_archive/reframer_7h.json
+roles_archive/social_coach.json
+prompts/gurdjieff_teachings.json
+glow.deb
+searches/search_2025-04-20_18-34-06.json
+searches/search_2025-04-20_20-37-59.json
+searches/search_2025-04-20_20-49-15.json
+searches/search_2025-04-20_21-04-08.json
+searches/search_2025-04-20_21-35-58.json
+searches/search_2025-04-21_07-57-53.json
+searches/search_2025-04-21_08-01-24.json
+searches/search_2025-04-21_10-22-21.json
+searches/search_2025-04-21_10-29-10.json
+searches/search_2025-04-21_10-29-58.json
