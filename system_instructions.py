@@ -18,7 +18,8 @@ COLOR_CYAN = "\033[96m"
 COLOR_WHITE = "\033[97m"
 COLOR_RESET = "\033[0m"
 
-BASE_DIR = Path("/mnt/c/Users/Alex/gassistant")
+# Use current working directory for cross-platform compatibility
+BASE_DIR = Path.cwd() / "gemini_assistant_data"
 
 
 # Configure logging
@@ -141,7 +142,7 @@ class InstructionManager:
     def __init__(self, base_dir: Path):
         """Initialize the InstructionManager with the base directory."""
         self.instruction_folder = base_dir / "instructions"
-        self.instruction_folder.mkdir(exist_ok=True)
+        self.instruction_folder.mkdir(parents=True, exist_ok=True)
         
         # Active instruction tracking
         self.active_instruction = None

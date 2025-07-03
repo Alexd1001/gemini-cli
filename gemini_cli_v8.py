@@ -22,8 +22,8 @@ from pathlib import Path
 
 import requests
 from colorama import init, Fore, Style as ColoramaStyle
-from google import genai
-from google.genai import types
+import google.generativeai as genai
+from google.generativeai import types
 from prompt_toolkit import PromptSession
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style as PromptStyle
@@ -83,30 +83,72 @@ API_KEY = "AIzaSyApXSPOzwQU6lCyu407aKfKbR5z-GERTZE"
 GOOGLE_SEARCH_API_KEY = "AIzaSyAEf8rdzlL1ssMrEsspBm1tHtGhqKriWzQ"
 GOOGLE_SEARCH_CX = "c610e96c90d3a4eae"
 
-# --- SDK Migration Change: Initialize the client ---
+# --- Configure the Google Generative AI client ---
 try:
-    client = genai.Client(api_key=API_KEY)
+    genai.configure(api_key=API_KEY)
+    # Create a client-like object to maintain compatibility with existing code
+    class ClientWrapper:
+        def __init__(self):
+            pass
+        
+        @property
+        def chats(self):
+            return self
+            
+        @property
+        def models(self):
+            return self
+        
+        def create(self, model=None, history=None, system_instruction=None):
+            # Create a GenerativeModel instance
+            if system_instruction:
+                model_instance = genai.GenerativeModel(
+                    model_name=model,
+                    system_instruction=system_instruction
+                )
+            else:
+                model_instance = genai.GenerativeModel(model_name=model)
+            
+            # Start a chat session with history if provided
+            if history:
+                return model_instance.start_chat(history=history)
+            else:
+                return model_instance.start_chat()
+        
+        def generate_content(self, prompt, model=None, tools=None, tool_config=None):
+            # Create model instance for one-time content generation
+            model_instance = genai.GenerativeModel(
+                model_name=model or DEFAULT_MODEL_NAME,
+                tools=tools
+            )
+            
+            if tools and tool_config:
+                return model_instance.generate_content(prompt, tool_config=tool_config)
+            else:
+                return model_instance.generate_content(prompt)
+    
+    client = ClientWrapper()
 except Exception as e:
-    print(f"{Fore.RED}Fatal Error: Could not initialize Google GenAI Client.{ColoramaStyle.RESET_ALL}")
+    print(f"{Fore.RED}Fatal Error: Could not configure Google Generative AI.{ColoramaStyle.RESET_ALL}")
     print(f"{Fore.RED}Error details: {e}{ColoramaStyle.RESET_ALL}")
-    print(f"{Fore.YELLOW}Please ensure your API_KEY is valid and the 'google-genai' package is installed correctly.{ColoramaStyle.RESET_ALL}")
+    print(f"{Fore.YELLOW}Please ensure your API_KEY is valid and the 'google-generativeai' package is installed correctly.{ColoramaStyle.RESET_ALL}")
     exit(1) # Exit if client can't be created
 
 # --- SDK Migration Change: Model name updated as per docs examples ---
 DEFAULT_MODEL_NAME = "gemini-2.0-flash-thinking-exp-01-21"
 GROUNDING_MODEL_NAME = "gemini-2.0-flash-thinking-exp-01-21"
 
-# Define the folder structure
-BASE_DIR = Path("/mnt/c/Users/Alex/gassistant")
+# Define the folder structure - use local directory for cross-platform compatibility
+BASE_DIR = Path.cwd() / "gemini_assistant_data"
 instruction_manager = InstructionManager(BASE_DIR)
 LOG_FOLDER = BASE_DIR / "logs"
 PROMPT_FOLDER = BASE_DIR / "prompts"
 SEARCH_FOLDER = BASE_DIR / "searches"
 
 # Create necessary folders
-LOG_FOLDER.mkdir(exist_ok=True)
-PROMPT_FOLDER.mkdir(exist_ok=True)
-SEARCH_FOLDER.mkdir(exist_ok=True)
+LOG_FOLDER.mkdir(parents=True, exist_ok=True)
+PROMPT_FOLDER.mkdir(parents=True, exist_ok=True)
+SEARCH_FOLDER.mkdir(parents=True, exist_ok=True)
 
 # Define a custom style for the prompt input
 from prompt_toolkit.styles import Style

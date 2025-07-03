@@ -1,0 +1,10 @@
+{
+  "items": [
+    {
+      "title": "Test Result 1",
+      "link": "https://example.com/1",
+      "snippet": "This is a test snippet 1",
+      "displayLink": "example.com"
+    }
+  ]
+}

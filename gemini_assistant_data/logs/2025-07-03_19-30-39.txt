@@ -1,0 +1,7 @@
+You: test query
+Error: No active chat session. Please try using 'reset' to create a new session.
+
+--- ERROR ---
+Error: name 'current_search_method' is not defined
+--- END ERROR ---
+
