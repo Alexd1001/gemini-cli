@@ -62,3 +62,6 @@ searches/search_2025-04-21_08-01-24.json
 searches/search_2025-04-21_10-22-21.json
 searches/search_2025-04-21_10-29-10.json
 searches/search_2025-04-21_10-29-58.json
+
+# User data directories (created by updated cross-platform paths)
+gemini_assistant_data/
